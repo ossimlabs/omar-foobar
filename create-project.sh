@@ -14,34 +14,19 @@ function createProject() {
     mkdir buildSrc
     cp  ${TEMPLATE_PATH}/buildSrc/build.gradle ./buildSrc/
     sed -i '' -e "s/${TEMPLATE_NAME}/${PROJECT_NAME}/" ./settings.gradle
-}
 
-function createApp() {
+    # Add default app
     mkdir -p apps; cd apps
-    grails create-app ${PROJECT_NAME}-app
-    cd ${PROJECT_NAME}-app
-    rm -rf .gitignore buildSrc/ settings.gradle  gradle*
-    cp ${TEMPLATE_PATH}/apps/${TEMPLATE_NAME}-app/build.gradle .
-    cp ${TEMPLATE_PATH}/apps/${TEMPLATE_NAME}-app/gradle.properties .
-    cp ${TEMPLATE_PATH}/apps/${TEMPLATE_NAME}-app/grails-app/conf/application.yml ./grails-app/conf
-    sed -i '' -e "s/${TEMPLATE_NAME}/${PROJECT_NAME}/" ./grails-app/conf/application.yml
-    cp ${TEMPLATE_PATH}/apps/${TEMPLATE_NAME}-app/grails-app/conf/logback.xml ./grails-app/conf
-    cp ${TEMPLATE_PATH}/apps/${TEMPLATE_NAME}-app/grails-app/views/index.gsp ./grails-app/views
-    cd ../..
-}
+    ${TEMPLATE_PATH}/create-app.sh $PROJECT_NAME
+    cd ..
 
-function createPlugin() {
+    # Add default plugin
     mkdir -p plugins; cd plugins
-    grails create-plugin ${PROJECT_NAME}-plugin
-    cd ${PROJECT_NAME}-plugin
-    rm -rf .gitignore buildSrc/ settings.gradle  gradle*
-    cp ${TEMPLATE_PATH}/plugins/${TEMPLATE_NAME}-plugin/build.gradle .
-    cp ${TEMPLATE_PATH}/plugins/${TEMPLATE_NAME}-plugin/gradle.properties .
+    ${TEMPLATE_PATH}/create-plugin.sh $PROJECT_NAME
+    cd ..
 }
 
 createProject
-createApp
-createPlugin
 
 
 
