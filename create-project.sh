@@ -24,6 +24,10 @@ function createProject() {
     mkdir -p plugins; cd plugins
     ${TEMPLATE_PATH}/create-plugin.sh $PROJECT_NAME
     cd ..
+
+    # Add skaffold
+    cp ${TEMPLATE_PATH}/skaffold.yaml .
+    sed -i '' -e "s/${TEMPLATE_NAME}/${PROJECT_NAME}/" ./skaffold.yaml
 }
 
 createProject
