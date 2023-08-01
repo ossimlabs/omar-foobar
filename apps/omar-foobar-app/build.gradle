@@ -1,0 +1,29 @@
+plugins {
+  id 'com.google.cloud.tools.jib'
+}
+
+dependencies {
+  implementation project( ":${rootProject.name}-plugin" )
+  runtimeOnly "org.grails.plugins:grails-console:${grailsConsoleVersion}"
+}
+
+assets {
+  minifyJs = true
+  minifyCss = true
+}
+
+jib {
+  from {
+    image = dockerBaseImage
+  }
+  to {
+    image = "${project.name - '-app'}"
+    tags = [ 'latest' ]
+  }
+  containerizingMode = 'packaged'
+  container {
+    creationTime = 'USE_CURRENT_TIMESTAMP'
+    ports = [ '8080' ]
+  }
+}
+
