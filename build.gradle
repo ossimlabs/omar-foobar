@@ -15,7 +15,7 @@ subprojects { project ->
     apply plugin: "application"
     apply plugin: "eclipse"
 
-    version "0.1"
+    version projectVersion
     group = groupName
 
     if ( isGrailsApp ) {
