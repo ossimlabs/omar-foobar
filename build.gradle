@@ -89,6 +89,7 @@ subprojects { project ->
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-chrome-driver:${ seleniumVersion }" )
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-firefox-driver:${ seleniumVersion }" )
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-safari-driver:${ seleniumVersion }" )
+        runtimeOnly "org.postgresql:postgresql"
       } else if ( isGrailsPlugin ) {
       }
     }
