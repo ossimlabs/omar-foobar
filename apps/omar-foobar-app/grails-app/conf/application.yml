@@ -108,12 +108,6 @@ grails:
       csrfProtection:
         enabled: false
 
-environments:
-  production:
-    grails:
-      h2console:
-        enabled: true
-
 server:
   port: 8080
   servlet:
@@ -125,3 +119,9 @@ management:
       base-path: '/actuator'
       exposure:
         include: '*'
+environments:
+  production:
+    spring:
+      h2:
+        console:
+          enabled: true
