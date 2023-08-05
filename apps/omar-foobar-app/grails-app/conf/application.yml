@@ -42,6 +42,7 @@ environments:
         testOnReturn: false
         jdbcInterceptors: ConnectionState
         defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
 grails:
   gorm:
     reactor:
@@ -96,6 +97,7 @@ hibernate:
     queries: false
     use_second_level_cache: false
     use_query_cache: false
+
 ---
 grails:
   cors:
@@ -125,3 +127,5 @@ environments:
       h2:
         console:
           enabled: true
+          settings:
+            web-allow-others: true

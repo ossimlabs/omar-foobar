@@ -2,5 +2,10 @@ plugins {
 }
 
 dependencies {
+  implementation project( ":${rootProject.name}-lib" )
 }
 
+assets {
+  minifyJs = true
+  minifyCss = true
+}

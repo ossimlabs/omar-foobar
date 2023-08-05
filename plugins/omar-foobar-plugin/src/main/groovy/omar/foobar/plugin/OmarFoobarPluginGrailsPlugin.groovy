@@ -18,6 +18,7 @@ class OmarFoobarPluginGrailsPlugin extends Plugin {
        def description = '''\
    Brief summary/description of the plugin.
    '''
+       def profiles = ['web']
    // URL to the plugin's documentation
        def documentation = "https://grails.github.io/OmarFoobarPlugin/"
 

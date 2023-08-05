@@ -1,5 +1,5 @@
 plugins {
-  id "com.github.erdi.webdriver-binaries" version "${ webdriverPluginVersion }"
+  id "com.github.erdi.webdriver-binaries" version "${ webdriverPluginVersion }" apply false
   id "com.github.ben-manes.versions" version "${ versionsPluginVersion }"
   id 'com.google.cloud.tools.jib' version "${ jibPluginVersion }" apply false
 }
@@ -9,28 +9,30 @@ subprojects { project ->
   boolean isGrailsPlugin = project.name.endsWith( '-plugin' )
   boolean isGrailsProject = isGrailsApp || isGrailsPlugin
 
-  if ( isGrailsProject ) {
-    apply plugin: "groovy"
-    apply plugin: "idea"
-    apply plugin: "application"
-    apply plugin: "eclipse"
+  apply plugin: 'groovy'
+  apply plugin: 'idea'
+  apply plugin: 'eclipse'
 
-    version projectVersion
-    group = groupName
+  version projectVersion
+  group = groupName
+
+  repositories {
+    mavenLocal()
+    maven { url 'https://repo.osgeo.org/repository/release/' }
+    mavenCentral()
+    maven { url "https://repo.grails.org/grails/core/" }
+  }
+
+  if ( isGrailsProject ) {
+    apply plugin: 'application'
+    apply plugin: 'org.grails.grails-gsp'
+    apply plugin: 'org.grails.grails-web'
+    apply plugin: 'com.bertramlabs.asset-pipeline'
 
     if ( isGrailsApp ) {
-      apply plugin: "org.grails.grails-gsp"
-      apply plugin: "org.grails.grails-web"
-      apply plugin: "com.bertramlabs.asset-pipeline"
+      apply plugin: 'com.github.erdi.webdriver-binaries'
     } else if ( isGrailsPlugin ) {
-      apply plugin: "org.grails.grails-plugin"
-    }
-
-    repositories {
-      mavenLocal()
-      maven { url 'https://repo.osgeo.org/repository/release/' }
-      mavenCentral()
-      maven { url "https://repo.grails.org/grails/core/" }
+      apply plugin: 'org.grails.grails-plugin'
     }
 
     configurations {
@@ -57,31 +59,31 @@ subprojects { project ->
       implementation( "org.grails:grails-plugin-services" )
       implementation( "org.grails:grails-plugin-url-mappings" )
       implementation( "org.grails:grails-web-boot" )
+      implementation( "org.grails.plugins:gsp" )
       implementation( "org.grails.plugins:hibernate5" )
+      implementation( "org.grails.plugins:scaffolding" )
       implementation( "org.hibernate:hibernate-core:${ hibernateCoreVersion }" )
       implementation( "org.springframework.boot:spring-boot-autoconfigure" )
+      implementation( "org.springframework.boot:spring-boot-starter" )
+      implementation( "org.springframework.boot:spring-boot-starter-actuator" )
       implementation( "org.springframework.boot:spring-boot-starter-logging" )
+      implementation( "org.springframework.boot:spring-boot-starter-tomcat" )
       implementation( "org.springframework.boot:spring-boot-starter-validation" )
       compileOnly( "io.micronaut:micronaut-inject-groovy" )
-      console( "org.grails:grails-console" )
+      runtimeOnly( "com.bertramlabs.plugins:asset-pipeline-grails:${ assetPipelineVersion }" )
       runtimeOnly( "com.h2database:h2" )
       runtimeOnly( "javax.xml.bind:jaxb-api:${ jaxbVersion }" )
       runtimeOnly( "org.apache.tomcat:tomcat-jdbc" )
+      runtimeOnly( "org.fusesource.jansi:jansi:${ jansiVersion }" )
       runtimeOnly( "org.glassfish.web:el-impl:${ glassfishVersion }" )
       testImplementation( "io.micronaut:micronaut-inject-groovy" )
       testImplementation( "org.grails:grails-gorm-testing-support" )
+      testImplementation( "org.grails:grails-web-testing-support" )
       testImplementation( "org.spockframework:spock-core" )
       testImplementation( "io.micronaut:micronaut-http-client" )
+      console( "org.grails:grails-console" )
 
       if ( isGrailsApp ) {
-        implementation( "org.grails.plugins:gsp" )
-        implementation( "org.grails.plugins:scaffolding" )
-        implementation( "org.springframework.boot:spring-boot-starter" )
-        implementation( "org.springframework.boot:spring-boot-starter-actuator" )
-        implementation( "org.springframework.boot:spring-boot-starter-tomcat" )
-        runtimeOnly( "com.bertramlabs.plugins:asset-pipeline-grails:${ assetPipelineVersion }" )
-        runtimeOnly( "org.fusesource.jansi:jansi:${ jansiVersion }" )
-        testImplementation( "org.grails:grails-web-testing-support" )
         testImplementation( "org.grails.plugins:geb" )
         testImplementation( "org.seleniumhq.selenium:selenium-api:${ seleniumVersion }" )
         testImplementation( "org.seleniumhq.selenium:selenium-remote-driver:${ seleniumVersion }" )
@@ -89,10 +91,10 @@ subprojects { project ->
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-chrome-driver:${ seleniumVersion }" )
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-firefox-driver:${ seleniumVersion }" )
         testRuntimeOnly( "org.seleniumhq.selenium:selenium-safari-driver:${ seleniumVersion }" )
-        runtimeOnly "org.postgresql:postgresql"
       } else if ( isGrailsPlugin ) {
       }
     }
+
     application {
       mainClass.set( "${ project.name.replace( '-', '.' ) }.Application" )
     }
@@ -117,6 +119,7 @@ subprojects { project ->
         geckodriver webdriverGeckoVersion
         edgedriver webdriverEdgeVersion
       }
+    } else if ( isGrailsPlugin ) {
     }
   }
 }
