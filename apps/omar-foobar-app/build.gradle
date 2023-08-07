@@ -1,6 +1,7 @@
 plugins {
   id "com.github.erdi.webdriver-binaries"
   id 'com.google.cloud.tools.jib'
+  id 'java-library'
 }
 
 dependencies {

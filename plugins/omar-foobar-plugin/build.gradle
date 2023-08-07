@@ -1,4 +1,5 @@
 plugins {
+  id 'java-library'
 }
 
 dependencies {
@@ -6,6 +7,10 @@ dependencies {
 }
 
 assets {
-  minifyJs = true
-  minifyCss = true
+  packagePlugin = true
+
+  includes = [
+  ]
+  excludes = [
+  ]
 }
