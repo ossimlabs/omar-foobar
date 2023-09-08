@@ -2,6 +2,7 @@ plugins {
   id "com.github.erdi.webdriver-binaries" version "${ webdriverPluginVersion }" apply false
   id "com.github.ben-manes.versions" version "${ versionsPluginVersion }"
   id 'com.google.cloud.tools.jib' version "${ jibPluginVersion }" apply false
+  id 'maven-publish'
 }
 
 subprojects { project ->
@@ -28,6 +29,8 @@ subprojects { project ->
     apply plugin: 'org.grails.grails-gsp'
     apply plugin: 'org.grails.grails-web'
     apply plugin: 'com.bertramlabs.asset-pipeline'
+
+
 
     if ( isGrailsApp ) {
       apply plugin: 'com.github.erdi.webdriver-binaries'
